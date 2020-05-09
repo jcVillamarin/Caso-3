@@ -1,0 +1,14 @@
+delegado 0: recibio-HOLA-continuando.
+delegado 0: recibio-ALGORITMOS:AES:RSA:HMACSHA1-continuando.
+delegado 0: envio-OK-continuando.
+delegado 0: recibio-certificado del cliente. continuando.
+delegado 0: envio-OK-continuando.
+delegado 0: envio- certificado del servidor. continuando.
+delegado 0: recibio-OK-continuando.
+delegado 0: envio-llave K_SC al cliente. continuado.
+delegado 0: envio-9670-reto al cliente. continuando 
+delegado 0: recibio-9670-reto correcto. continuado.
+delegado 0: recibio-12-continuando
+delegado 0: envio-1438-cifrado con K_SC. continuado.
+delegado 0: recibio-OK-Terminando exitosamente.
+
