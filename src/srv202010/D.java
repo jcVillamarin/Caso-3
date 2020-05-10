@@ -37,6 +37,7 @@ public class D extends Thread {
 	private static X509Certificate certSer;
 	private static KeyPair keyPairServidor;
 	private static File file;
+	private static File fileT;
 	public static final int numCadenas = 13;
 
 	
@@ -77,6 +78,17 @@ public class D extends Thread {
 		
 		try {
 			FileWriter fw = new FileWriter(file,true);
+			fw.write(pCadena + "\n");
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	private synchronized void escribirT(String pCadena) {
+
+		try {
+			FileWriter fw = new FileWriter(fileT,true);
 			fw.write(pCadena + "\n");
 			fw.close();
 		} catch (Exception e) {
@@ -140,7 +152,7 @@ public class D extends Thread {
 				cadenas[2] = dlg + ENVIO + OK + "-continuando.";
 				System.out.println(cadenas[2]);
 
-				
+				long ini=System.currentTimeMillis();
 				/***** Fase 3: Recibe certificado del cliente *****/				
 				String strCertificadoCliente = dc.readLine();
 				byte[] certificadoClienteBytes = new byte[520];
@@ -232,6 +244,9 @@ public class D extends Thread {
 				linea = dc.readLine();	
 				if (linea.equals(OK)) {
 					cadenas[12] = dlg + REC + linea + "-Terminando exitosamente.";
+					long fin=System.currentTimeMillis();
+					long to=fin-ini;
+					escribirT(Long.toString(to));
 					System.out.println(cadenas[12]);
 				} else {
 					cadenas[12] = dlg + REC + linea + "-Terminando con error";

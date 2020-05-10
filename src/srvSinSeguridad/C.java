@@ -12,15 +12,21 @@ import java.security.cert.X509Certificate;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import srv202010.medidorCarga;
+
 
 public class C {
 	private static ServerSocket ss;	
 	private static final String MAESTRO = "MAESTRO: ";
 	private static X509Certificate certSer; /* acceso default */
 	private static KeyPair keyPairServidor; /* acceso default */
-	
-	
-	
+
+	private static int finishTransactions=0;
+
+	public static synchronized void finishTran() {
+		finishTransactions++;
+	}
+
 	/**
 	 * @param args
 	 */
@@ -43,23 +49,38 @@ public class C {
 		keyPairServidor = S.grsa();
 		certSer = S.gc(keyPairServidor); 
 		String ruta = "./resultados.txt";
-		   
-        file = new File(ruta);
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-        FileWriter fw = new FileWriter(file);
-        fw.close();
 
-        D.init(certSer, keyPairServidor,file);
-        
+		file = new File(ruta);
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		FileWriter fw = new FileWriter(file);
+		fw.close();
+
+
+		// Crea archivo tiempo transaccion
+		File fileT=null;
+		String rutaT="./time.txt";
+		fileT = new File(rutaT);
+		if (!fileT.exists()) {
+			fileT.createNewFile();
+		}
+		FileWriter fwT = new FileWriter(fileT);
+		fwT.close();
+
+		D.init(certSer, keyPairServidor,file,fileT);
+
 		// Crea el socket que escucha en el puerto seleccionado.
 		ss = new ServerSocket(ip);
 		System.out.println(MAESTRO + "Socket creado.");
 		pool= Executors.newFixedThreadPool(nThreads);
-        
+		
+		medidorCarga m=new medidorCarga();
+		m.start();
+		
 		for (int i=0;true;i++) {
 			try { 
+				
 				pool.execute(new D(ss.accept(),i));
 				System.out.println(MAESTRO + "Cliente " + i + " aceptado.");
 			} catch (IOException e) {

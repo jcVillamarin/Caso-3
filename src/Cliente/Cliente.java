@@ -47,6 +47,8 @@ public class Cliente {
 			boolean estado=false;
 			while (!estado) {
 				try {
+					//System.setProperty("socksProxyHost", "157.253.236.45");
+					//System.setProperty("socksProxyPort", "80");
 					sc=new Socket(HOST, PUERTO);
 					escritor=new PrintWriter(sc.getOutputStream(),true);
 					lector=new BufferedReader(new InputStreamReader(sc.getInputStream()));
@@ -54,6 +56,7 @@ public class Cliente {
 					return true;
 				} catch (Exception e) {
 					System.out.println("Error en conexion con el servidor");
+					e.printStackTrace();
 					System.out.println("Intentando conexion con el servidor nuevamente");
 					wait(2000);
 					estado= false;
