@@ -244,6 +244,7 @@ public class D extends Thread {
 				linea = dc.readLine();	
 				if (linea.equals(OK)) {
 					cadenas[12] = dlg + REC + linea + "-Terminando exitosamente.";
+					
 					long fin=System.currentTimeMillis();
 					long to=fin-ini;
 					escribirT(Long.toString(to));

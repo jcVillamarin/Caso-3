@@ -12,6 +12,7 @@ import java.security.KeyPair;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.crypto.SecretKey;
@@ -40,6 +41,10 @@ public class D extends Thread {
 	private static File fileT;
 	public static final int numCadenas = 13;
 
+	private Queue<Socket> socks;
+	private Queue<Integer> ids;
+	private boolean finish=false;
+
 
 	public static void init(X509Certificate pCertSer, KeyPair pKeyPairServidor, File pFile,File pFileT) {
 		certSer = pCertSer;
@@ -58,6 +63,17 @@ public class D extends Thread {
 			System.out.println("Error creando el thread" + dlg);
 			e.printStackTrace();
 		}
+	}
+
+	public synchronized void addRquest(Socket csP, int idP) {
+		socks.add(csP);
+		ids.add(idP);
+	}
+
+	public synchronized void handleRequest() {
+		sc=socks.remove();
+		dlg=new String("delegado " + ids.remove() + ": ");
+		run();
 	}
 
 	private boolean validoAlgHMAC(String nombre) {
@@ -97,6 +113,10 @@ public class D extends Thread {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void finish() {
+		finish=true;
 	}
 
 	public void run() {
@@ -246,6 +266,7 @@ public class D extends Thread {
 				long fin=System.currentTimeMillis();
 				long to=fin-ini;
 				escribirT(Long.toString(to));
+				C.finishTran();
 				System.out.println(cadenas[12]);
 			} else {
 				cadenas[12] = dlg + REC + linea + "-Terminando con error";
@@ -258,6 +279,17 @@ public class D extends Thread {
 			}
 			escribirMensaje(log);
 
+			while(true) {
+				if(!socks.isEmpty()) {
+					handleRequest();
+					}
+				else {
+					if(finish) {
+						break;
+					}
+					wait();
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

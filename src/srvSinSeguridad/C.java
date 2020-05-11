@@ -25,6 +25,7 @@ public class C {
 
 	public static synchronized void finishTran() {
 		finishTransactions++;
+		System.out.println(finishTransactions+" clientes atendidos");
 	}
 
 	/**
@@ -74,20 +75,37 @@ public class C {
 		ss = new ServerSocket(ip);
 		System.out.println(MAESTRO + "Socket creado.");
 		pool= Executors.newFixedThreadPool(nThreads);
-		
+
 		medidorCarga m=new medidorCarga();
 		m.start();
-		
-		for (int i=0;true;i++) {
-			try { 
-				
-				pool.execute(new D(ss.accept(),i));
+
+		D t1=null;
+		D t2=null;
+
+
+		try { 
+			t1=new D(ss.accept(),0);
+			pool.execute(t1);
+			System.out.println(MAESTRO + "Cliente " + 0 + " aceptado.");
+			t2=new D(ss.accept(),1);
+			pool.execute(t2);
+			System.out.println(MAESTRO + "Cliente " + 1 + " aceptado.");
+			for (int i=2;i<400;i++) {
+				t1.addRquest(ss.accept(),i);
 				System.out.println(MAESTRO + "Cliente " + i + " aceptado.");
-			} catch (IOException e) {
-				pool.shutdown();
-				System.out.println(MAESTRO + "Error creando el socket cliente.");
-				e.printStackTrace();
+				i++;
+				t2.addRquest(ss.accept(),i);
+				System.out.println(MAESTRO + "Cliente " + i + " aceptado.");
 			}
+			t1.finish();
+			t2.finish();
+			pool.shutdown();
+		} catch (IOException e) {
+			pool.shutdown();
+			System.out.println(MAESTRO + "Error creando el socket cliente.");
+			e.printStackTrace();
 		}
+		
+		
 	}
 }
