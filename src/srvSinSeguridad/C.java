@@ -12,6 +12,7 @@ import java.security.cert.X509Certificate;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import srvSinSeguridad.D;
 import srv202010.medidorCarga;
 
 
@@ -79,10 +80,18 @@ public class C {
 		medidorCarga m=new medidorCarga();
 		m.start();
 
-		D t1=null;
-		D t2=null;
-
-
+		for (int i=0;i<400;i++) {
+			try { 
+				pool.execute(new D(ss.accept(),i));
+				System.out.println(MAESTRO + "Cliente " + i + " aceptado.");
+			} catch (IOException e) {
+				pool.shutdown();
+				System.out.println(MAESTRO + "Error creando el socket cliente.");
+				e.printStackTrace();
+			}
+		}
+		pool.shutdown();
+		/*
 		try { 
 			t1=new D(ss.accept(),0);
 			pool.execute(t1);
@@ -99,12 +108,13 @@ public class C {
 			}
 			t1.finish();
 			t2.finish();
-			pool.shutdown();
+			
 		} catch (IOException e) {
 			pool.shutdown();
 			System.out.println(MAESTRO + "Error creando el socket cliente.");
 			e.printStackTrace();
 		}
+		*/
 		
 		
 	}

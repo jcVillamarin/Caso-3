@@ -43,7 +43,7 @@ public class D extends Thread {
 
 	private Queue<Socket> socks;
 	private Queue<Integer> ids;
-	private boolean finish=false;
+	//private static boolean finish=false;
 
 
 	public static void init(X509Certificate pCertSer, KeyPair pKeyPairServidor, File pFile,File pFileT) {
@@ -64,7 +64,7 @@ public class D extends Thread {
 			e.printStackTrace();
 		}
 	}
-
+	/*
 	public synchronized void addRquest(Socket csP, int idP) {
 		socks.add(csP);
 		ids.add(idP);
@@ -75,7 +75,7 @@ public class D extends Thread {
 		dlg=new String("delegado " + ids.remove() + ": ");
 		run();
 	}
-
+*/
 	private boolean validoAlgHMAC(String nombre) {
 		return ((nombre.equals(S.HMACMD5) || 
 				nombre.equals(S.HMACSHA1) ||
@@ -114,11 +114,11 @@ public class D extends Thread {
 		}
 
 	}
-	
+	/*
 	public void finish() {
 		finish=true;
 	}
-
+*/
 	public void run() {
 		String[] cadenas;
 		cadenas = new String[numCadenas];
@@ -278,7 +278,7 @@ public class D extends Thread {
 				log+=(cadenas[i]+"\n");
 			}
 			escribirMensaje(log);
-
+			/*
 			while(true) {
 				if(!socks.isEmpty()) {
 					handleRequest();
@@ -289,7 +289,7 @@ public class D extends Thread {
 					}
 					wait();
 				}
-			}
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
