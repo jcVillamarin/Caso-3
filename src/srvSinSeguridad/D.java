@@ -177,11 +177,11 @@ public class D extends Thread {
 			long ini=System.currentTimeMillis();
 			/***** Fase 3: Recibe certificado del cliente *****/				
 			String strCertificadoCliente = dc.readLine();
-			byte[] certificadoClienteBytes = new byte[520];
-			certificadoClienteBytes = toByteArray(strCertificadoCliente);
-			CertificateFactory creador = CertificateFactory.getInstance("X.509");
-			InputStream in = new ByteArrayInputStream(certificadoClienteBytes);
-			X509Certificate certificadoCliente = (X509Certificate)creador.generateCertificate(in);
+			//byte[] certificadoClienteBytes = new byte[520];
+			//certificadoClienteBytes = toByteArray(strCertificadoCliente);
+			//CertificateFactory creador = CertificateFactory.getInstance("X.509");
+			//InputStream in = new ByteArrayInputStream(certificadoClienteBytes);
+			//X509Certificate certificadoCliente = (X509Certificate)creador.generateCertificate(in);
 			cadenas[3] = dlg + REC + "certificado del cliente. continuando.";
 			System.out.println(cadenas[3]);
 			ac.println(OK);
