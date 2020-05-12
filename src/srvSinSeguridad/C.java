@@ -50,7 +50,7 @@ public class C {
 		File file = null;
 		keyPairServidor = S.grsa();
 		certSer = S.gc(keyPairServidor); 
-		String ruta = "./resultados.txt";
+		String ruta = "./20resultados.txt";
 
 		file = new File(ruta);
 		if (!file.exists()) {
@@ -62,7 +62,7 @@ public class C {
 
 		// Crea archivo tiempo transaccion
 		File fileT=null;
-		String rutaT="./time.txt";
+		String rutaT="./20time.txt";
 		fileT = new File(rutaT);
 		if (!fileT.exists()) {
 			fileT.createNewFile();

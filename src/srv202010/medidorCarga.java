@@ -36,22 +36,25 @@ public class medidorCarga extends Thread{
 	public void run() {
 		try {
 			File fileT=null;
-			String rutaT="./carga.txt";
+			String rutaT="./20carga.txt";
 			fileT = new File(rutaT);
 			if (!fileT.exists()) {
 				fileT.createNewFile();
 			}
-			FileWriter fwT = new FileWriter(fileT,true);
+			FileWriter fwT = new FileWriter(rutaT, true);
 			double carga=0;
+			
 			while(activo) {
 				carga=getSystemCpuLoad();
-				fwT.write(Double.toString(carga));
+				fwT.write(Double.toString(carga)+"\n");
+				fwT.flush();
 				espera();
 			}
 			fwT.close();
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 }
